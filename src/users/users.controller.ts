@@ -6,6 +6,7 @@ import {
   Put,
   Param,
   Body,
+  HttpCode,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { IUser, IUserForResponce } from '../interface/interface';
@@ -14,6 +15,7 @@ import { CreateUserDto, UpdatePasswordDto } from './dto/users-dto';
 @Controller('user')
 export class UsersController {
   constructor(private usersService: UsersService) {}
+
   @Get()
   async getAllUsers(): Promise<IUser[]> {
     return await this.usersService.getAll();
@@ -38,6 +40,7 @@ export class UsersController {
     return await this.usersService.updatePassword(id, dataUser);
   }
   @Delete(':id')
+  @HttpCode(204)
   async deleteUserById(@Param('id') id: string) {
     return await this.usersService.deleteUser(id);
   }

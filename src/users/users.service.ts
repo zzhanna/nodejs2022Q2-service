@@ -41,18 +41,20 @@ export class UsersService {
   }
   async updatePassword(id: string, body: UpdatePasswordDto) {
     const { oldPassword, newPassword } = body;
-    const findUserById = await userByValidId(id);
-    if (!oldPassword || !newPassword)
-      throw new HttpException('Invalid request', 400);
-    if (oldPassword !== findUserById.password) {
-      throw new HttpException('Old password invalid', 403);
+    if (oldPassword && newPassword) {
+      const findUserById = await userByValidId(id);
+      if (oldPassword !== findUserById.password)
+        throw new HttpException('Old password invalid', 403);
+
+      findUserById.password = newPassword;
+      findUserById.version += 1;
+      findUserById.updatedAt = new Date().getTime();
+      const response = { ...findUserById };
+      delete response.password;
+      return response;
+    } else {
+      throw new HttpException('Bad request', 400);
     }
-    findUserById.password = newPassword;
-    findUserById.version += 1;
-    findUserById.updatedAt = new Date().getTime();
-    const response = { ...findUserById };
-    delete response.password;
-    return response;
   }
 
   async deleteUser(id: string) {
