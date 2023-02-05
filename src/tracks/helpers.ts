@@ -1,7 +1,7 @@
 import { validate as uuidValidate } from 'uuid';
 import { db } from 'src/database/db';
 import { HttpException } from '@nestjs/common';
-import { ITrack } from './../../dist/interface/interface.d';
+import { ITrack } from '../interface/interface';
 
 export const trackByValidId = (id: string): ITrack => {
   if (uuidValidate(id)) {

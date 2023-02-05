@@ -8,15 +8,15 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateTrackDto, UpdateTrackDto } from 'src/tracks/dto/tracks-dto';
+import { CreateTrackDto, UpdateTrackDto } from '../tracks/dto/tracks-dto';
 import { TracksService } from './tracks.service';
 import { ITrack } from './../interface/interface';
 
-@Controller('tracks')
+@Controller('track')
 export class TracksController {
-  constructor(private readonly tracksService: TracksService) {}
+  constructor(private tracksService: TracksService) {}
   @Get()
-  async getAllUsers(): Promise<ITrack[]> {
+  async getAllTracks(): Promise<ITrack[]> {
     return await this.tracksService.getAll();
   }
   @Get(':id')
@@ -28,7 +28,7 @@ export class TracksController {
   async createNewTrack(
     @Body() dataUser: CreateTrackDto,
   ): Promise<CreateTrackDto> {
-    return await this.tracksService.createUser(dataUser);
+    return await this.tracksService.createTrack(dataUser);
   }
 
   @Put(':id')
@@ -36,11 +36,11 @@ export class TracksController {
     @Param('id') id: string,
     @Body() dataTrack: UpdateTrackDto,
   ): Promise<UpdateTrackDto> {
-    return await this.tracksService.updatePassword(id, dataTrack);
+    return await this.tracksService.updateTrack(id, dataTrack);
   }
   @Delete(':id')
   @HttpCode(204)
   async deleteUserById(@Param('id') id: string) {
-    return await this.tracksService.deleteUser(id);
+    return await this.tracksService.deleteTrack(id);
   }
 }

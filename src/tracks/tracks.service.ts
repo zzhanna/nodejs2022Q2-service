@@ -1,12 +1,19 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { db } from 'src/database/db';
+//import { Inject } from '@nestjs/common/decorators';
+import { db } from '../database/db';
 import { CreateTrackDto, UpdateTrackDto } from './dto/tracks-dto';
-import { trackByValidId } from 'src/tracks/helpers';
+import { trackByValidId } from '../tracks/helpers';
 import { v4 } from 'uuid';
-import { ITrack } from './../../dist/interface/interface.d';
+import { ITrack } from './../interface/interface';
+//import { ArtistsService } from '../artists/artists.service';
 
 @Injectable()
 export class TracksService {
+  // constructor(
+  //   @Inject(forwardRef(() => ArtistsService))
+  //   private readonly artistService: ArtistsService,
+  // ) {}
+
   getAll() {
     return db.tracks;
   }
@@ -16,45 +23,49 @@ export class TracksService {
     return response;
   }
 
-  createUser(dataTrack: CreateTrackDto): ITrack {
+  createTrack({ name, artistId, albumId, duration }: CreateTrackDto): ITrack {
     if (
-      dataTrack.name &&
-      dataTrack.artistId &&
-      dataTrack.albumId &&
-      dataTrack.duration
-    ) {
-      const { name, artistId, albumId, duration } = dataTrack;
-      const newTrack = {
-        id: v4(),
-        name,
-        artistId,
-        albumId: null,
-        duration: null,
-      };
-
-      const response = { ...newTrack };
-      return response;
-    } else
+      name &&
+      !artistId &&
+      artistId !== null &&
+      !albumId &&
+      albumId !== null &&
+      duration
+    )
       throw new HttpException(
         'Request body does not contain name, artistId, albumId, duration, fields',
         400,
       );
+
+    const newTrack = {
+      id: v4(),
+      name,
+      duration,
+      artistId: null,
+      albumId: null,
+    };
+
+    // if (artistId) {
+    //   const isArtist = this.artistService.getArtistById(artistId);
+    //   if (isArtist) newTrack.artistId = artistId;
+    // }
+
+    db.tracks.push(newTrack);
+    return newTrack;
   }
-  async updatePassword(id: string, body: UpdateTrackDto) {
-    const { name, artistId, albumId, duration } = body;
-    if (name && artistId && albumId && duration) {
+
+  async updateTrack(id: string, { name, duration }: UpdateTrackDto) {
+    if (name && duration) {
       const findTrackById = await trackByValidId(id);
       findTrackById.name = name;
-      findTrackById.albumId = artistId;
-      findTrackById.albumId = albumId;
-
+      findTrackById.duration = duration;
       return findTrackById;
     } else {
       throw new HttpException('Bad request', 400);
     }
   }
 
-  async deleteUser(id: string) {
+  async deleteTrack(id: string) {
     const trackById = await trackByValidId(id);
     if (trackById) {
       db.tracks = db.tracks.filter((track) => track.id !== id);
