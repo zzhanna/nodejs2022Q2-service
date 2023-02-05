@@ -1,10 +1,10 @@
 import { HttpException, Injectable } from '@nestjs/common';
 //import { Inject } from '@nestjs/common/decorators';
-import { db } from '../database/db';
+import { db } from '../../database/db';
 import { CreateTrackDto, UpdateTrackDto } from './dto/tracks-dto';
-import { trackByValidId } from '../tracks/helpers';
+import { trackByValidId } from './helpers';
 import { v4 } from 'uuid';
-import { ITrack } from './../interface/interface';
+import { ITrack } from '../../interface/interface';
 //import { ArtistsService } from '../artists/artists.service';
 
 @Injectable()

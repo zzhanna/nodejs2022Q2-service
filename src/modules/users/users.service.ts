@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdatePasswordDto } from './dto/users-dto';
-import { db } from 'src/database/db';
-import { IUserForResponce } from 'src/interface/interface';
+import { db } from '../database/db';
+import { IUserForResponce } from '../interface/interface';
 import { v4 } from 'uuid';
 import { userByValidId } from './helpers';
 

@@ -8,9 +8,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateTrackDto, UpdateTrackDto } from '../tracks/dto/tracks-dto';
+import { CreateTrackDto, UpdateTrackDto } from './dto/tracks-dto';
 import { TracksService } from './tracks.service';
-import { ITrack } from './../interface/interface';
+import { ITrack } from '../../interface/interface';
 
 @Controller('track')
 export class TracksController {

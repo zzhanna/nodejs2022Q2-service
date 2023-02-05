@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { db } from 'src/database/db';
 import { artistByValidId } from './helpers';
 import { CreateArtistDto, UpdateArtistDto } from './dto/artists-dto';
-import { IArtist } from '../interface/interface';
+import { IArtist } from '../../interface/interface';
 import { v4 } from 'uuid';
 
 @Injectable()

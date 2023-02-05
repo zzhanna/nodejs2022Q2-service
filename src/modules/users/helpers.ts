@@ -1,5 +1,5 @@
 import { validate as uuidValidate } from 'uuid';
-import { db } from 'src/database/db';
+import { db } from '../database/db';
 import { HttpException } from '@nestjs/common';
 import { IUser } from '../interface/interface';
 
