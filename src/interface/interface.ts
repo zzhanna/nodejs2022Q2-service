@@ -15,12 +15,6 @@ export interface IUserForResponce {
   updatedAt: number; // timestamp of last update
 }
 
-export interface IArtist {
-  id: string; // uuid v4
-  name: string;
-  grammy: boolean;
-}
-
 export interface ITrack {
   id: string; // uuid v4
   name: string;
@@ -29,6 +23,11 @@ export interface ITrack {
   duration: number; // integer number
 }
 
+export interface IArtist {
+  id: string; // uuid v4
+  name: string;
+  grammy: boolean;
+}
 export interface IAlbum {
   id: string; // uuid v4
   name: string;
