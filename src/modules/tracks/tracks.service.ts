@@ -59,7 +59,6 @@ export class TracksService {
       }
     }
     db.tracks.push(newTrack);
-    console.log(db);
     return newTrack;
   }
 

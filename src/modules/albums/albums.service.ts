@@ -20,15 +20,14 @@ export class AlbumsService {
     return albumById;
   }
 
-  createAlbum(dataAlbum: CreateAlbumDto): IAlbum {
+  async createAlbum(dataAlbum: CreateAlbumDto): Promise<IAlbum> {
     if (!dataAlbum.name || !dataAlbum.year)
       throw new HttpException(
         'Request body does not contain  name or year fields',
         400,
       );
     if (dataAlbum.name && dataAlbum.year) {
-      const { name, year } = dataAlbum;
-      let { artistId } = dataAlbum;
+      const { name, year, artistId } = dataAlbum;
       const newAlbum = {
         id: v4(),
         name,
@@ -37,7 +36,9 @@ export class AlbumsService {
       };
       if (artistId) {
         const isArtist = this.artistService.getArtistById(artistId);
-        if (isArtist) artistId = artistId;
+        if (isArtist) {
+          newAlbum.artistId = artistId;
+        }
       }
 
       db.albums.push(newAlbum);

@@ -1,8 +1,9 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { db } from 'src/database/db';
-import { AlbumsService } from 'src/modules/albums/albums.service';
-import { ArtistsService } from 'src/modules/artists/artists.service';
-import { TracksService } from 'src/modules/tracks/tracks.service';
+import { db } from '../../database/db';
+import { AlbumsService } from '../../modules/albums/albums.service';
+import { ArtistsService } from '../../modules/artists/artists.service';
+import { TracksService } from '../../modules/tracks/tracks.service';
+import { typeByValidId } from './helpers';
 
 @Injectable()
 export class FavoritesService {
@@ -15,7 +16,7 @@ export class FavoritesService {
     private tracksService: TracksService,
   ) {}
 
-  getAll() {
+  getAllFavs() {
     const artists = db.favorites.artists.map((artistId) =>
       this.artistsService.getArtistById(artistId),
     );
@@ -31,5 +32,23 @@ export class FavoritesService {
       tracks,
     };
     return favs;
+  }
+
+  addFavorite(id: string, type: string) {
+    const elById = typeByValidId(id, type);
+    if (!db.favorites[`${type}s`].includes(id)) {
+      db.favorites[`${type}s`].push(id);
+      return elById;
+    }
+  }
+
+  deleteFavorite(id: string, type: string) {
+    const elById = typeByValidId(id, type);
+    if (elById) {
+      db.favorites[`${type}s`] = db.favorites[`${type}s`].filter(
+        (elId: string) => elId !== id,
+      );
+      return;
+    }
   }
 }
