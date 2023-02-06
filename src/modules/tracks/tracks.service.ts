@@ -20,8 +20,8 @@ export class TracksService {
   getAll() {
     return db.tracks;
   }
-  async getById(id: string) {
-    const trackById = await trackByValidId(id);
+  getTrackById(id: string) {
+    const trackById = trackByValidId(id);
     return trackById;
   }
 
@@ -63,9 +63,9 @@ export class TracksService {
     return newTrack;
   }
 
-  async updateTrack(id: string, { name, duration }: UpdateTrackDto) {
+  updateTrack(id: string, { name, duration }: UpdateTrackDto) {
     if (name && duration) {
-      const findTrackById = await trackByValidId(id);
+      const findTrackById = trackByValidId(id);
       findTrackById.name = name;
       findTrackById.duration = duration;
       return findTrackById;
@@ -74,8 +74,8 @@ export class TracksService {
     }
   }
 
-  async deleteTrack(id: string) {
-    const trackById = await trackByValidId(id);
+  deleteTrack(id: string) {
+    const trackById = trackByValidId(id);
     if (trackById) {
       db.tracks = db.tracks.filter((track) => track.id !== id);
     } else throw new HttpException('Bad request', 404);

@@ -40,6 +40,11 @@ export interface IFavorites {
   albums: string[]; // favorite albums ids
   tracks: string[]; // favorite tracks ids
 }
+export interface IFavoritesResponce {
+  artists: IArtist[]; // favorite artists ids
+  albums: IAlbum[]; // favorite albums ids
+  tracks: ITrack[]; // favorite tracks ids
+}
 
 export interface ICreateUserDto {
   login: string;

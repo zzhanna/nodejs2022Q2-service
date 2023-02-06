@@ -10,8 +10,8 @@ export class ArtistsService {
   getAll() {
     return db.artists;
   }
-  async getArtistById(id: string) {
-    const artistById = await artistByValidId(id);
+  getArtistById(id: string) {
+    const artistById = artistByValidId(id);
     return artistById;
   }
 
@@ -31,13 +31,13 @@ export class ArtistsService {
         400,
       );
   }
-  async updateArtist(id: string, body: UpdateArtistDto) {
+  updateArtist(id: string, body: UpdateArtistDto) {
     const { name, grammy } = body;
     if (
       (name && typeof name === 'string') ||
       (grammy && typeof grammy === 'boolean')
     ) {
-      let findTrackById = await artistByValidId(id);
+      let findTrackById = artistByValidId(id);
       findTrackById = { ...findTrackById, ...body };
       return findTrackById;
     } else {
@@ -45,11 +45,11 @@ export class ArtistsService {
     }
   }
 
-  async deleteArtist(id: string) {
-    const artistById = await artistByValidId(id);
+  deleteArtist(id: string) {
+    const artistById = artistByValidId(id);
     if (artistById) {
       db.artists = db.artists.filter((artist) => artist.id !== id);
-      await db.tracks.forEach((track) => {
+      db.tracks.forEach((track) => {
         if (track.artistId === id) {
           track.artistId = null;
         }

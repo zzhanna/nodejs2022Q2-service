@@ -10,8 +10,8 @@ export class UsersService {
   getAll() {
     return db.users;
   }
-  async getById(id: string) {
-    const userById = await userByValidId(id);
+  getById(id: string) {
+    const userById = userByValidId(id);
     const response = { ...userById };
     delete response.password;
     return response;
@@ -39,10 +39,10 @@ export class UsersService {
         400,
       );
   }
-  async updatePassword(id: string, body: UpdatePasswordDto) {
+  updatePassword(id: string, body: UpdatePasswordDto) {
     const { oldPassword, newPassword } = body;
     if (oldPassword && newPassword) {
-      const findUserById = await userByValidId(id);
+      const findUserById = userByValidId(id);
       if (oldPassword !== findUserById.password)
         throw new HttpException('Old password invalid', 403);
 
@@ -57,8 +57,8 @@ export class UsersService {
     }
   }
 
-  async deleteUser(id: string) {
-    const userById = await userByValidId(id);
+  deleteUser(id: string) {
+    const userById = userByValidId(id);
     if (userById) {
       db.users = db.users.filter((user) => user.id !== id);
     } else throw new HttpException('Bad request', 404);

@@ -21,7 +21,7 @@ export class TracksController {
   }
   @Get(':id')
   async getTrackById(@Param('id') id: string): Promise<ITrack> {
-    return await this.tracksService.getById(id);
+    return await this.tracksService.getTrackById(id);
   }
 
   @Post()

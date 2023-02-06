@@ -15,8 +15,8 @@ export class AlbumsService {
   getAll() {
     return db.albums;
   }
-  async getAlbumById(id: string) {
-    const albumById = await albumByValidId(id);
+  getAlbumById(id: string) {
+    const albumById = albumByValidId(id);
     return albumById;
   }
 
@@ -44,13 +44,13 @@ export class AlbumsService {
       return newAlbum;
     } else throw new HttpException('Invalid requests', 400);
   }
-  async updateAlbum(id: string, body: UpdateAlbumDto) {
+  updateAlbum(id: string, body: UpdateAlbumDto) {
     const { name, year } = body;
     if (
       (name && typeof name === 'string') ||
       (year && typeof year === 'number')
     ) {
-      let findTrackById = await albumByValidId(id);
+      let findTrackById = albumByValidId(id);
       findTrackById = { ...findTrackById, ...body };
       return findTrackById;
     } else {
@@ -58,11 +58,11 @@ export class AlbumsService {
     }
   }
 
-  async deleteAlbum(id: string) {
-    const albumById = await albumByValidId(id);
+  deleteAlbum(id: string) {
+    const albumById = albumByValidId(id);
     if (albumById) {
       db.albums = db.albums.filter((album) => album.id !== id);
-      await db.tracks.forEach((track) => {
+      db.tracks.forEach((track) => {
         if (track.artistId === id) {
           track.artistId = null;
         }
