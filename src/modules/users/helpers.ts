@@ -1,7 +1,7 @@
 import { validate as uuidValidate } from 'uuid';
-import { db } from '../database/db';
+import { db } from '../../database/db';
 import { HttpException } from '@nestjs/common';
-import { IUser } from '../interface/interface';
+import { IUser } from '../../interface/interface';
 
 export const userByValidId = (id: string): IUser => {
   if (uuidValidate(id)) {

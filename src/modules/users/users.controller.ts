@@ -9,7 +9,7 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { IUser, IUserForResponce } from '../interface/interface';
+import { IUser, IUserForResponce } from '../../interface/interface';
 import { CreateUserDto, UpdatePasswordDto } from './dto/users-dto';
 
 @Controller('user')

@@ -1,4 +1,77 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
+import { v4 } from 'uuid';
+import { db } from '../../database/db';
+import { IAlbum } from '../../interface/interface';
+import { CreateAlbumDto, UpdateAlbumDto } from './dto/albums-dto';
+import { albumByValidId } from './helpers';
+import { ArtistsService } from '../artists/artists.service';
 
 @Injectable()
-export class AlbumsService {}
+export class AlbumsService {
+  constructor(
+    @Inject(forwardRef(() => ArtistsService))
+    private artistService: ArtistsService,
+  ) {}
+  getAll() {
+    return db.albums;
+  }
+  async getAlbumById(id: string) {
+    const albumById = await albumByValidId(id);
+    return albumById;
+  }
+
+  createAlbum(dataAlbum: CreateAlbumDto): IAlbum {
+    if (!dataAlbum.name || !dataAlbum.year)
+      throw new HttpException(
+        'Request body does not contain  name or year fields',
+        400,
+      );
+    if (dataAlbum.name && dataAlbum.year) {
+      const { name, year } = dataAlbum;
+      let { artistId } = dataAlbum;
+      const newAlbum = {
+        id: v4(),
+        name,
+        year,
+        artistId: null,
+      };
+      if (artistId) {
+        const isArtist = this.artistService.getArtistById(artistId);
+        if (isArtist) artistId = artistId;
+      }
+
+      db.albums.push(newAlbum);
+      return newAlbum;
+    } else throw new HttpException('Invalid requests', 400);
+  }
+  async updateAlbum(id: string, body: UpdateAlbumDto) {
+    const { name, year } = body;
+    if (
+      (name && typeof name === 'string') ||
+      (year && typeof year === 'number')
+    ) {
+      let findTrackById = await albumByValidId(id);
+      findTrackById = { ...findTrackById, ...body };
+      return findTrackById;
+    } else {
+      throw new HttpException('Bad request', 400);
+    }
+  }
+
+  async deleteAlbum(id: string) {
+    const albumById = await albumByValidId(id);
+    if (albumById) {
+      db.albums = db.albums.filter((album) => album.id !== id);
+      await db.tracks.forEach((track) => {
+        if (track.artistId === id) {
+          track.artistId = null;
+        }
+        if (track.albumId === id) {
+          track.albumId = null;
+        }
+      });
+
+      return;
+    } else throw new HttpException('Bad request', 404);
+  }
+}

@@ -1,26 +1,28 @@
-import { HttpException, Injectable } from '@nestjs/common';
-//import { Inject } from '@nestjs/common/decorators';
+import { forwardRef, HttpException, Injectable } from '@nestjs/common';
+import { Inject } from '@nestjs/common/decorators';
 import { db } from '../../database/db';
 import { CreateTrackDto, UpdateTrackDto } from './dto/tracks-dto';
 import { trackByValidId } from './helpers';
 import { v4 } from 'uuid';
 import { ITrack } from '../../interface/interface';
-//import { ArtistsService } from '../artists/artists.service';
+import { ArtistsService } from '../artists/artists.service';
+import { AlbumsService } from './../albums/albums.service';
 
 @Injectable()
 export class TracksService {
-  // constructor(
-  //   @Inject(forwardRef(() => ArtistsService))
-  //   private readonly artistService: ArtistsService,
-  // ) {}
+  constructor(
+    @Inject(forwardRef(() => ArtistsService))
+    private artistService: ArtistsService,
+    @Inject(forwardRef(() => AlbumsService))
+    private albumService: AlbumsService,
+  ) {}
 
   getAll() {
     return db.tracks;
   }
   async getById(id: string) {
     const trackById = await trackByValidId(id);
-    const response = { ...trackById };
-    return response;
+    return trackById;
   }
 
   createTrack({ name, artistId, albumId, duration }: CreateTrackDto): ITrack {
@@ -45,12 +47,19 @@ export class TracksService {
       albumId: null,
     };
 
-    // if (artistId) {
-    //   const isArtist = this.artistService.getArtistById(artistId);
-    //   if (isArtist) newTrack.artistId = artistId;
-    // }
+    if (artistId) {
+      const isArtist = this.artistService.getArtistById(artistId);
+      if (isArtist) newTrack.artistId = artistId;
+    }
 
+    if (albumId) {
+      const isAlbum = this.albumService.getAlbumById(albumId);
+      if (isAlbum) {
+        newTrack.albumId = albumId;
+      }
+    }
     db.tracks.push(newTrack);
+    console.log(db);
     return newTrack;
   }
 
