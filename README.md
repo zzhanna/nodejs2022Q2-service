@@ -24,6 +24,7 @@ npm start
 ```
 
 After starting the app on port (4000 as default) you can open
+If you want to change default http port -> rename file .env.example to .env and change new number to the value PORT, it must be type of Number.
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
