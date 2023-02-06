@@ -3,7 +3,7 @@ import { db } from '../../database/db';
 import { AlbumsService } from '../../modules/albums/albums.service';
 import { ArtistsService } from '../../modules/artists/artists.service';
 import { TracksService } from '../../modules/tracks/tracks.service';
-import { typeByValidId } from './helpers';
+import { deleteByValidId, typeByValidId } from './helpers';
 
 @Injectable()
 export class FavoritesService {
@@ -43,7 +43,7 @@ export class FavoritesService {
   }
 
   deleteFavorite(id: string, type: string) {
-    const elById = typeByValidId(id, type);
+    const elById = deleteByValidId(id, type);
     if (elById) {
       db.favorites[`${type}s`] = db.favorites[`${type}s`].filter(
         (elId: string) => elId !== id,

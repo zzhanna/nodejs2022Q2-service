@@ -71,6 +71,7 @@ export class AlbumsService {
           track.albumId = null;
         }
       });
+      db.favorites.albums = db.favorites.albums.filter((album) => album !== id);
 
       return;
     } else throw new HttpException('Bad request', 404);

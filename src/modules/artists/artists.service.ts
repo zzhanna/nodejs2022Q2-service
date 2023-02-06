@@ -54,6 +54,9 @@ export class ArtistsService {
           track.artistId = null;
         }
       });
+      db.favorites.artists = db.favorites.artists.filter(
+        (artist) => artist !== id,
+      );
       return;
     } else throw new HttpException('Bad request', 404);
   }

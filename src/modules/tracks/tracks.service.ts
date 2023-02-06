@@ -77,6 +77,7 @@ export class TracksService {
     const trackById = trackByValidId(id);
     if (trackById) {
       db.tracks = db.tracks.filter((track) => track.id !== id);
+      db.favorites.tracks = db.favorites.tracks.filter((track) => track !== id);
     } else throw new HttpException('Bad request', 404);
   }
 }
