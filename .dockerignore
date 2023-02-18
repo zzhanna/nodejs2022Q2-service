@@ -2,8 +2,11 @@
 
 /dist
 /node_modules
-npm-debug.log
+/logs/*.log
+/test
 
 .env
 
 README.md
+Dockerfile
+docker-compose.yml

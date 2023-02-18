@@ -1,15 +1,13 @@
 FROM node:18-alpine
 
-WORKDIR /usr/app
+WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install --legacy-peer-deps
-
+RUN npm install --force
 
 COPY . .
-ENV NODE_ENV=${NODE_ENV}
 
-EXPOSE ${PORT:-4000}
+EXPOSE ${PORT}
 
 CMD ["npm", "run", "start:dev"]
