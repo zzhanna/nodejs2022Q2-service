@@ -3,7 +3,7 @@ version: '3.3'
 services:
   app:
     container_name: container-app
-    image: app-img
+    image: zhannabohan/app-img
     build: .
     restart: always
     environment:
@@ -11,8 +11,8 @@ services:
     ports:
       - '${PORT}:${PORT}'
     volumes:
-      - ./:/usr/app/
-      - /usr/app/node_modules
+      - ./:/app/
+      - /app/node_modules
     depends_on:
       - music_bd
     networks:
@@ -20,7 +20,7 @@ services:
 
   music_bd:
     container_name: container-db
-    image: db-img
+    image: zhannabohan/db-img
     build: ./src/database/
     restart: always
     ports:
