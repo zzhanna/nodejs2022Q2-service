@@ -8,7 +8,21 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone {git@github.com:zzhanna/nodejs2022Q2-service.git}
+cd nodejs2022Q4-service
+git checkout docker
+```
+
+## Build image and start container
+
+```
+npm run docker:build
+```
+
+## Scan images
+
+```
+npm run docker:scan
 ```
 
 ## Installing NPM modules
